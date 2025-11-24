@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Ezzor: no test specified\" && exit 1"
+    "test": "echo \"Erro: no test specified\" && exit 1"
   },
   "keywords": [
     "whatsapp",
