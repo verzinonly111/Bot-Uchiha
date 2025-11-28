@@ -6,7 +6,7 @@ const sleep = async (ms) => {
 };
 
 const delVoto = (idGroup) => {
-  processo = votacao.indexOf(idGroup);
+  let processo = votacao.indexOf(idGroup);
   while (processo >= 0) {
     votacao.splice(processo, 1);
     processo = votacao.indexOf(idGroup);
@@ -40,7 +40,7 @@ const addVoto = async (ID, _valor1, _valor2, _valor3, _valor4, reply) => {
   );
   setTimeout(
     async function () {
-      voto = JSON.parse(
+      let voto = JSON.parse(
         fs.readFileSync(`./database/grupos/votacao/p_votos/${ID}.json`),
       );
       let verdade = voto.filter((dds) => dds.votacao == '1');
