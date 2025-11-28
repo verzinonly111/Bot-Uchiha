@@ -5,10 +5,9 @@
   "description": "Bot Uchiha",
   "main": "index.js",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "scripts": {
-    "preinstall": "node ./engine-requirements.js",
     "start": "node index.js",
     "lint": "eslint .",
     "test": "echo No tests specified && exit 0",
