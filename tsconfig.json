@@ -1,6 +1,10 @@
 {
   // Visit https://aka.ms/tsconfig to read more about this file
-  "compilerOptions": {
+     "esModuleInterop": true,
+     "resolveJsonModule": true,
+     "allowSyntheticDefaultImports": true,
+     "types": ["node"]
+     "compilerOptions": {
     // File Layout
      "rootDir": "./src",
      "outDir": "./dist",
@@ -34,7 +38,6 @@
 
     // Recommended Options
     "strict": false,
-    "noImplicitGlobalReferences": true,
     "jsx": "react-jsx",
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
