@@ -1,2 +1,13 @@
-dist/
-node_modules/
+{
+  "env": {
+    "node": true
+  },
+  "extends": ["eslint:recommended"],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-node-globals": "off" // Desativa a regra para globais do Node.js
+  }
+}
