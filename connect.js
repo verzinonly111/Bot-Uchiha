@@ -6,6 +6,7 @@
         botName: "𝐔𝐜𝐡𝐢𝐡𝐚-𝐁𝐨𝐭 👾",
         botNumber: "+244955873027whatsApp.net",
         ownerContact: "+244948963368whatsApp.net",
+        subOwner: "+244926824485whatsApp.net",
         telegramLink: "t.me/uchiha_all",
         instagramLink: "https://www.instagram.com/ruben_siilver?igsh=MWRpZjVwaXJwZ21kNQ==",
         facebookLink: "https://www.facebook.com/profile.php?id=61551471087846",
