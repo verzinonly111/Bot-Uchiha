@@ -1,65 +1,26 @@
 import express from "express";
-import axios from "axios";
+import helmet from "helmet";
+import { loadEnv } from "./config/env";
+import logger from "./utils/logger";
+import { verifyToken } from "./controllers/verifyController";
+import { receiveMessage } from "./controllers/messageController";
+import { verifySignature, apiRateLimiter } from "./utils/security";
+import { sendLogToWhodbok } from "./services/whodbok.service";
+
+loadEnv();
 
 const app = express();
-app.use(express.json());
+app.use(express.json({ limit: "1mb" }));
+app.use(helmet());
+app.use(apiRateLimiter);
 
-const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
-const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN;
-const PHONE_NUMBER_ID = process.env.PHONE_NUMBER_ID;
-
-// 🟢 Verificação do Webhook
-app.get("/webhook", (req, res) => {
-  const mode = req.query["hub.mode"];
-  const token = req.query["hub.verify_token"];
-  const challenge = req.query["hub.challenge"];
-
-  if (mode && token && mode === "subscribe" && token === VERIFY_TOKEN) {
-    return res.status(200).send(challenge);
-  } else {
-    return res.sendStatus(403);
-  }
+app.get("/webhook", verifyToken);
+app.post("/webhook", verifySignature, async (req, res) => {
+  await sendLogToWhodbok({ event: "webhook_received", body: req.body });
+  return receiveMessage(req, res);
 });
 
-// 🔵 Receber mensagens
-app.post("/webhook", async (req, res) => {
-  const data = req.body;
-
-  try {
-    const message =
-      data?.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
-
-    if (message) {
-      const from = message.from;
-      const text = message.text?.body || "";
-
-      await sendMessage(from, `Você disse: ${text}`);
-    }
-  } catch (e) {
-    console.error("Erro:", e);
-  }
-
-  res.sendStatus(200);
-});
-
-// 🟣 Enviar mensagem
-async function sendMessage(to: string, text: string) {
-  await axios.post(
-    `https://graph.facebook.com/v22.0/${PHONE_NUMBER_ID}/messages`,
-    {
-      messaging_product: "whatsapp",
-      to,
-      text: { body: text }
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${WHATSAPP_TOKEN}`,
-        "Content-Type": "application/json"
-      }
-    }
-  );
-}
-
-app.listen(3000, () => {
-  console.log("🔥 Uchiha Bot Cloud API rodando na porta 3000");
+const PORT = Number(process.env.PORT) || 3000;
+app.listen(PORT, () => {
+  logger.info(`Uchiha-Bot v10.0.1 rodando na porta ${PORT}`);
 });
